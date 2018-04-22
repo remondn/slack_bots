@@ -48,6 +48,8 @@ def handle_command(command, channel):
     # This is where you start to implement more commands!
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure...write some more code then I can do that!"
+    if command.startswith("who are you ?"):
+        response = starterbot_id
 
     # Sends the response back to the channel
     slack_client.api_call(
