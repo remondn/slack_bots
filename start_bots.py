@@ -1,6 +1,6 @@
 import os
 import time
-import thread
+import _thread
 import re
 from slackclient import SlackClient
 
