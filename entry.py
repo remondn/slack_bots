@@ -2,7 +2,7 @@ import os
 import time
 import threading
 import re
-import Queue
+import queue
 from slackclient import SlackClient
 
 
@@ -66,7 +66,7 @@ def handle_msg(msg, channel, slack_client, bot_id):
     )
 
 
-def welcomer(queue):
+def welcomer(q):
     """
 
     Welcomer : Treat all incomming requests from clients, and put it into the 
@@ -74,7 +74,7 @@ def welcomer(queue):
     loop, the thread go to sleep for 0.5 sec.
 
     Args :
-        queue (Queue) : Shared queue with the welcomer thread. Request are put
+        q (Queue) : Shared queue with the welcomer thread. Request are put
                         here.
     
     """
@@ -108,7 +108,7 @@ def welcomer(queue):
                 if msg:
                     # If there is a command, put it into the queue !
                     request = [msg, channel, clients[ws], bot_id]
-                    queue.put(request)
+                    q.put(request)
 
                     # And remember that we treated a client
                     client = True
@@ -121,19 +121,19 @@ def welcomer(queue):
 
 
 
-def worker(queue):
+def worker(q):
     """
 
     Worker : look into the queue, and treat the request if there is any.
 
     Args :
-        queue (Queue) : Shared queue with the welcomer thread. Request are put
+        q (Queue) : Shared queue with the welcomer thread. Request are put
                         here.
     
     """
     while True:
         # Never stop to look into the queue and treat what's there
-        msg, channel, client, bot_id = queue.get()
+        msg, channel, client, bot_id = q.get()
         handle_msg(msg, channel, client, bot_id)
     
 
@@ -144,12 +144,12 @@ def main():
     Main of the server. This main start workers threads and start the welcomer.
 
     """
-    queue = Queue.Queue()
+    q = queue.Queue()
     t = []
     for i in range(THREAD_NB):
-        t.append(threading.Thread(target=worker, args=(queue,)))
+        t.append(threading.Thread(target=worker, args=(q,)))
     
-    worker(queue)
+    worker(q)
 
 if __name__ == "__main__":
     main()
