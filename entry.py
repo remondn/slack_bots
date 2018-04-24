@@ -160,7 +160,8 @@ def main():
         try:
             s.bind((host, port))
         except socket.error as msg:
-            print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+            print("Bind failed. Error Code : {} \nMessage : {}" \
+                .format(str(msg[0]), msg[1])
             sys.exit()
 
     q = queue.Queue()
