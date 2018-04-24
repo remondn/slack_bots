@@ -81,8 +81,11 @@ def welcomer(q):
     # Get the workspaces to listen to
     workspaces = os.environ.get('SLACK_BOT_TOKEN').split(',')
 
+    print("List of Bot tokens : {}".format(workspaces))
+
     clients = {}
     connections = {}
+    bot_id = {}
 
     while True:
         client = False
@@ -93,17 +96,19 @@ def welcomer(q):
                 clients[ws] = SlackClient(ws) 
             if not ws in connections:
                 connections[ws] = clients[ws].rtm_connect(with_team_state=False)
+                if connections[ws]:
+                    bot_id[ws] = clients[ws].api_call("auth.test")["user_id"]
+                    print("Bot ({}) connected to {} and running!" \
+                        .format(clients[ws], bot_id[ws]))
+                else:
+                    print("Connection to {} failed.".format(clients[ws]))
 
             # Treatment
             if connections[ws]:
-                # For user
-                print("Bot connected to {} and running!".format(clients[ws]))
-
-                # Get bot's ID with API
-                bot_id = clients[ws].api_call("auth.test")["user_id"]
-
                 # Get command if any
                 msg, channel = parse_bot_cmd(clients[ws].rtm_read())
+
+                print("Got this : {} --- {}".format(msg, channel))
 
                 if msg:
                     # If there is a command, put it into the queue !
@@ -112,8 +117,6 @@ def welcomer(q):
 
                     # And remember that we treated a client
                     client = True
-            else:
-                print("Connection to {} failed.".format(clients[ws]))
         
         if not client:
             time.sleep(BREAK_TIME)
@@ -134,6 +137,7 @@ def worker(q):
     while True:
         # Never stop to look into the queue and treat what's there
         msg, channel, client, bot_id = q.get()
+        print("DEQUEUED : {}".format(msg))
         handle_msg(msg, channel, client, bot_id)
     
 
