@@ -149,7 +149,7 @@ def main():
     for i in range(THREAD_NB):
         t.append(threading.Thread(target=worker, args=(q,)))
     
-    worker(q)
+    welcomer(q)
 
 if __name__ == "__main__":
     main()
