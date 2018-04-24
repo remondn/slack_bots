@@ -162,7 +162,7 @@ def main():
         except socket.error as msg:
             print("Bind failed. Error Code : {} \nMessage : {}" \
                 .format(str(msg[0]), msg[1])
-            sys.exit()
+            raise SystemExit
 
     q = queue.Queue()
     t = []
