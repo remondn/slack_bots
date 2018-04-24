@@ -135,6 +135,7 @@ def worker(q):
                         here.
     
     """
+    print("Thread started !")
     while True:
         # Never stop to look into the queue and treat what's there
         msg, channel, client, bot_id = q.get(block=True)
@@ -155,7 +156,9 @@ def main():
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         host = '' # Every interface
         port = int(os.environ.get('PORT'))
-        s.bind((host, port))
+        print("Port to bind = {}".format(port))
+        success = s.bind((host, port))
+        print("Binding = {}".format(success))
 
     q = queue.Queue()
     t = []
