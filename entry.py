@@ -89,9 +89,9 @@ def welcomer(q):
 
         for ws in workspaces:
             # Initialization part
-            if clients[ws] == None:
+            if not ws in clients:
                 clients[ws] = SlackClient(ws) 
-            if connections[ws] == None:
+            if not ws in connections:
                 connections[ws] = clients[ws].rtm_connect(with_team_state=False)
 
             # Treatment
