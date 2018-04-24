@@ -157,13 +157,17 @@ def main():
         host = '' # Every interface
         port = int(os.environ.get('PORT'))
         print("Port to bind = {}".format(port))
-        success = s.bind((host, port))
-        print("Binding = {}".format(success))
+        try:
+            s.bind((host, port))
+        except socket.error as msg:
+            print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+            sys.exit()
 
     q = queue.Queue()
     t = []
     for i in range(THREAD_NB):
         t.append(threading.Thread(target=worker, args=(q,)))
+        t[i].start()
     
     welcomer(q)
 
