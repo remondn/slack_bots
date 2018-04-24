@@ -164,7 +164,6 @@ def main():
                 .format(str(msg[0]), msg[1]))
             raise SystemExit
             
-
     q = queue.Queue()
     t = []
     for i in range(THREAD_NB):
