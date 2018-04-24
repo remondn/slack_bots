@@ -3,6 +3,7 @@ import time
 import threading
 import re
 import queue
+import socket
 from slackclient import SlackClient
 
 
@@ -56,7 +57,7 @@ def handle_msg(msg, channel, slack_client, bot_id):
     #     response = "Sure...write some more code then I can do that!"
     # if command.startswith("who are you ?"):
     #     response = bot_id
-
+    print("Handling cmd !")
     response = "WHAT ? I'M NOT WORKING!"
     # Sends the response back to the channel
     slack_client.api_call(
@@ -136,7 +137,7 @@ def worker(q):
     """
     while True:
         # Never stop to look into the queue and treat what's there
-        msg, channel, client, bot_id = q.get()
+        msg, channel, client, bot_id = q.get(block=True)
         print("DEQUEUED : {}".format(msg))
         handle_msg(msg, channel, client, bot_id)
     
@@ -146,8 +147,16 @@ def main():
     """
 
     Main of the server. This main start workers threads and start the welcomer.
+    Also bind a socket for no error from Heroku.
 
     """
+    is_heroku = os.environ.get('ON_HEROKU')
+    if is_heroku:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        host = '' # Every interface
+        port = int(os.environ.get('PORT'))
+        s.bind((host, port))
+
     q = queue.Queue()
     t = []
     for i in range(THREAD_NB):
