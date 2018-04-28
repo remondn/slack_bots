@@ -18,7 +18,7 @@ def handle_msg(msg, channel):
 
     """
     print("In the handle message of Starter Bot")
-    matches = re.compile(MENTION_REGEX).findall(msg.strip())
+    matches = re.compile(MENTION_REGEX).findall(msg)
     print("msg = {}, channel = {}, regex = {}".format(msg, channel, matches))
 
     if not matches:
@@ -26,9 +26,9 @@ def handle_msg(msg, channel):
 
     match = matches[0]
 
-    if match[2] is "do":
+    if match[2].strip() is "do":
         return ["You can do it !", channel]
-    elif match[0].upper() is "HEY":
+    elif match[0].upper().strip() is "HEY":
         return ["Hey !", channel]        
     else:
         return ["Sorry, I'm a beginner, I know only one command : do", channel]
