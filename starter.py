@@ -25,6 +25,7 @@ def handle_msg(msg, channel):
         return [None, None]
 
     match = matches[0]
+    print("MATCH = |{}|{}|".format(match[0].upper().strip(), match[2].strip()))
 
     if match[2].strip() is "do":
         return ["You can do it !", channel]
