@@ -1,17 +1,52 @@
 import os
 import time
 import threading
-import re
 import queue
 import socket
 from slackclient import SlackClient
+
+import starter
 
 
 # constants
 BREAK_TIME = 0.5
 THREAD_NB = 4
-EXAMPLE_COMMAND = "do"
-MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
+
+# Bot list
+STARTER_BOT = ['UAAB7MNBA']
+
+
+# Functions
+def handle_msg(msg, channel, slack_client, bot_id):
+    """
+        
+        Depending on the bot_id, redirect the message received to the right
+        method.
+
+        Args:
+            msg (string): Message sent by the user
+            channel (string): Name of the channel where the message have been 
+                              sent
+            slack_client: Slack client
+            bot_id (string): Bot ID 
+    """
+    print("Handling cmd !")
+
+    if bot_id in STARTER_BOT:
+        response, channel = starter.handle_msg(msg, channel)
+
+
+
+
+    if response is None or channel is None:
+        return  # Don't send anything
+
+    # Sends the response back to the channel
+    slack_client.api_call(
+        "chat.postMessage",
+        channel=channel,
+        text=response
+    )
 
 def parse_bot_cmd(slack_events):
     """
@@ -31,41 +66,6 @@ def parse_bot_cmd(slack_events):
         if event["type"] == "message":
             return event["text"], event["channel"]
     return None, None
-
-def handle_msg(msg, channel, slack_client, bot_id):
-    """
-        
-        Depending on the bot_id, redirect the message received to the right
-        method.
-
-        Args:
-            msg (string): Message sent by the user
-            channel (string): Name of the channel where the message have been 
-                              sent
-            slack_client: Slack client
-            bot_id (string): Bot ID 
-
-        TODO
-    """
-    # # Default response is help text for the user
-    # default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
-
-    # # Finds and executes the given command, filling in response
-    # response = None
-    # # This is where you start to implement more commands!
-    # if command.startswith(EXAMPLE_COMMAND):
-    #     response = "Sure...write some more code then I can do that!"
-    # if command.startswith("who are you ?"):
-    #     response = bot_id
-    print("Handling cmd !")
-    response = "WHAT ? I'M NOT WORKING!"
-    # Sends the response back to the channel
-    slack_client.api_call(
-        "chat.postMessage",
-        channel=channel,
-        text=response
-    )
-
 
 def welcomer(q):
     """
