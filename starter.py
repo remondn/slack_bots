@@ -19,7 +19,7 @@ def handle_msg(msg, channel):
     """
     print("In the handle message of Starter Bot")
     matches = re.compile(MENTION_REGEX).findall(msg)
-    print(matches)
+    print("msg = {}, channel = {}, regex = {}".format(msg, channel, matches)
 
     if not matches:
         return [None, None]
