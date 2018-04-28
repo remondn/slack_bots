@@ -111,7 +111,7 @@ def welcomer(q):
                 # Get command if any
                 msg, channel = parse_bot_cmd(clients[ws].rtm_read())
 
-                print("Got this : {} --- {}".format(msg, channel))
+                #print("Got this : {} --- {}".format(msg, channel))
 
                 if msg:
                     # If there is a command, put it into the queue !
