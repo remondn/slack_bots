@@ -1,6 +1,6 @@
 import re
 
-MENTION_REGEX = "(.*)<@(|[WU].+?)>(.*)"
+MENTION_REGEX = "(.*)<@(.+?)>(.*)"
 
 def handle_msg(msg, channel):
     """
