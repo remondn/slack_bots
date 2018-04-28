@@ -17,7 +17,9 @@ def handle_msg(msg, channel):
             channel (string): Name of the channel where the message needs to be sent
 
     """
+    print("In the handle message of Starter Bot")
     matches = re.compile(MENTION_REGEX).findall(msg)
+    print(matches)
 
     if not matches:
         return [None, None]

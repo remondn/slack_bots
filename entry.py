@@ -17,7 +17,7 @@ STARTER_BOT = ['UAAB7MNBA']
 
 
 # Functions
-def handle_msg(msg, channel, slack_client, bot_id):
+def handle_msg(msg, channel, slack_client, bot):
     """
         
         Depending on the bot_id, redirect the message received to the right
@@ -30,7 +30,7 @@ def handle_msg(msg, channel, slack_client, bot_id):
             slack_client: Slack client
             bot_id (string): Bot ID 
     """
-    _, bot_id = bot_id.popitem()
+    bot_id = bot[bot.keys()[0]]
     print("Handling cmd ! (bot id = {})".format(bot_id))
 
     response = None
