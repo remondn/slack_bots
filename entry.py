@@ -151,18 +151,18 @@ def main():
     Also bind a socket for no error from Heroku.
 
     """
-    is_heroku = os.environ.get('ON_HEROKU')
-    if is_heroku:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        host = '' # Every interface
-        port = int(os.environ.get('PORT'))
-        print("Port to bind = {}".format(port))
-        try:
-            s.bind((host, port))
-        except socket.error as msg:
-            print("Bind failed. Error Code : {} \nMessage : {}" \
-                .format(str(msg[0]), msg[1]))
-            raise SystemExit
+    # is_heroku = os.environ.get('ON_HEROKU')
+    # if is_heroku:
+    #     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #     host = '' # Every interface
+    #     port = int(os.environ.get('PORT'))
+    #     print("Port to bind = {}".format(port))
+    #     try:
+    #         s.bind((host, port))
+    #     except socket.error as msg:
+    #         print("Bind failed. Error Code : {} \nMessage : {}" \
+    #             .format(str(msg[0]), msg[1]))
+    #         raise SystemExit
             
     q = queue.Queue()
     t = []
