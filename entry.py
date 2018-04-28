@@ -30,6 +30,7 @@ def handle_msg(msg, channel, slack_client, bot_id):
             slack_client: Slack client
             bot_id (string): Bot ID 
     """
+    _, bot_id = bot_id.popitem()
     print("Handling cmd ! (bot id = {})".format(bot_id))
 
     response = None
