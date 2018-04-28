@@ -32,6 +32,8 @@ def handle_msg(msg, channel, slack_client, bot_id):
     """
     print("Handling cmd !")
 
+    response = None
+
     if bot_id in STARTER_BOT:
         response, channel = starter.handle_msg(msg, channel)
 
@@ -150,20 +152,7 @@ def main():
     Main of the server. This main start workers threads and start the welcomer.
     Also bind a socket for no error from Heroku.
 
-    """
-    # is_heroku = os.environ.get('ON_HEROKU')
-    # if is_heroku:
-    #     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #     host = '' # Every interface
-    #     port = int(os.environ.get('PORT'))
-    #     print("Port to bind = {}".format(port))
-    #     try:
-    #         s.bind((host, port))
-    #     except socket.error as msg:
-    #         print("Bind failed. Error Code : {} \nMessage : {}" \
-    #             .format(str(msg[0]), msg[1]))
-    #         raise SystemExit
-            
+    """            
     q = queue.Queue()
     t = []
     for i in range(THREAD_NB):
